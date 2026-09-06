@@ -126,7 +126,7 @@ f
 (my-proc 3)
 </div>
 
-<div class="live" id="syntax-my-let">
+<div class="live norun" id="syntax-my-let">
 (define-syntax my-let
     (syntax-rules ()
       [(my-let ((id e)) body)
@@ -143,7 +143,7 @@ f
     (* y y)))
 </div>
 
-<div class="live" id="syntax-my-let-my">
+<div class="live norun" id="syntax-my-let-my">
 (define-syntax my-let
     (syntax-rules ()
       [(my-let ((id e)) body)
@@ -176,7 +176,7 @@ f
              (* x y)))
 </div>
 
-<div class="live" id="syntax-my-let-star">
+<div class="live norun" id="syntax-my-let-star">
 (define-syntax my-let*
     (syntax-rules ()
       [(my-let* () body) body]
