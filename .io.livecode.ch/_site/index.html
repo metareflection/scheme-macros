@@ -1,0 +1,218 @@
+{% extends "base_livecode.html" %}
+
+{% block title %}Scheme macros: an interactive Tutorial{% endblock %}
+
+{% block content %}
+
+<div class="live" id="ex1">
+(lambda (x) x)
+</div>
+
+<div class="live" id="ex2">
+(define f (lambda (x) x))
+f
+</div>
+
+<div class="live" id="ex3">
+((lambda (x) x) (+ 3 4))
+</div>
+
+<div class="live" id="ex4">
+(let ((x (+ 3 4)))
+  x)
+</div>
+
+<div class="live" id="ex5">
+((lambda (y) (* y y)) (+ 3 4))
+</div>
+
+<div class="live" id="ex6">
+(let ((y (+ 3 4)))
+  (* y y))
+</div>
+
+<div class="live" id="ex7">
+(eval '(+ 3 4))
+</div>
+
+<div class="live" id="ex8">
+(expand '(let ((y (+ 3 4)))
+  (* y y)))
+</div>
+
+<div class="live" id="lib-print-gensym-f">
+(print-gensym #f)
+</div>
+
+<div class="live" id="ex9" data-lib="lib-print-gensym-f">
+(expand '(let ((y (+ 3 4)))
+  (* y y)))
+</div>
+
+<div class="live" id="lib-print-gensym-pretty" data-lib="lib-print-gensym-f">
+(print-gensym 'pretty/suffix)
+</div>
+
+<div class="live" id="ex10" data-lib="lib-print-gensym-pretty">
+(expand '(let ((y (+ 3 4)))
+             (* y y)))
+</div>
+
+<div class="live" id="ex11" data-lib="lib-print-gensym-pretty">
+(expand '((lambda (y) (* y y)) (+ 3 4)))
+</div>
+
+<div class="live" id="ex12">
+(let ((adj 'little))
+    (list 'Mary 'had 'a adj 'lamb))
+</div>
+
+<div class="live" id="ex13">
+(let ((adj 'little))
+    `(Mary had a ,adj lamb))
+</div>
+
+<div class="live" id="ex14">
+(let ((op '+))
+    `(,op 3 4))
+</div>
+
+<div class="live" id="ex15">
+(eval (let ((op '+))
+    `(,op 3 4)))
+</div>
+
+<div class="live" id="ex16">
+(eval (let ((op '*))
+    `(,op 3 4)))
+</div>
+
+<div class="live" id="ex17">
+(let ((var 'x))
+    `(let ((,var 3)) (* ,var ,var)))
+</div>
+
+<div class="live" id="ex18">
+(let ((var 'x)
+        (body '(x 4)))
+    `(let ((,var 3)) ,body))
+</div>
+
+<div class="live" id="ex19" data-lib="lib-print-gensym-pretty">
+(let ((var (gensym "x"))
+        (body '(x 4)))
+    `(let ((,var 3)) ,body))
+</div>
+
+<div class="live" id="ex20" data-lib="lib-print-gensym-pretty">
+(let ((var (gensym "x"))
+        (body '(x 4)))
+    `(let ((,var 3)) ,body))
+</div>
+
+<div class="live" id="ex21" data-lib="lib-print-gensym-pretty">
+(let ((var (gensym "x"))
+        (body '(x 4)))
+    `(let ((,var 3)) ,body))
+</div>
+
+<div class="live" id="lib-my-proc">
+(define my-proc (lambda (x) (* x x)))
+(define (my-proc x) (* x x))
+(my-proc 3)
+</div>
+
+<div class="live" id="syntax-my-let">
+(define-syntax my-let
+    (syntax-rules ()
+      [(my-let ((id e)) body)
+       ((lambda (id) body) e)]))
+</div>
+
+<div class="live" id="ex-my-let" data-lib="lib-print-gensym-pretty syntax-my-let">
+(my-let ((y (+ 3 4)))
+    (* y y))
+</div>
+
+<div class="live" id="ex-let-star-expand" data-lib="lib-print-gensym-pretty syntax-my-let">
+(expand '(my-let ((y (+ 3 4)))
+    (* y y)))
+</div>
+
+<div class="live" id="syntax-my-let-my">
+(define-syntax my-let
+    (syntax-rules ()
+      [(my-let ((id e)) body)
+       ((my-lambda (id) body) e)]))
+</div>
+
+<div class="live" id="ex-my-let-star-expand" data-lib="lib-print-gensym-pretty syntax-my-let-my">
+(expand '(my-let ((y (+ 3 4)))
+    (* y y)))
+</div>
+
+<div class="live" id="ex-let-star">
+(let* ((x (+ 4 5))
+         (y (* x x))
+         (y (+ x y)))
+    (* x y))
+</div>
+
+<div class="live" id="ex-let-nested">
+(let ((x (+ 4 5)))
+    (let ((y (* x x)))
+      (let ((y (+ x y)))
+        (* x y))))
+</div>
+
+<div class="live" id="ex-let-star-expand" data-lib="lib-print-gensym-pretty syntax-my-let-my">
+(expand '(let* ((x (+ 4 5))
+                  (y (* x x))
+                  (y (+ x y)))
+             (* x y)))
+</div>
+
+<div class="live" id="syntax-my-let-star">
+(define-syntax my-let*
+    (syntax-rules ()
+      [(my-let* () body) body]
+      [(my-let* ((id e) (id* e*) ...) body)
+       (let ((id e))
+         (my-let* ((id* e*) ...) body))]))
+</div>
+
+<div class="live" id="ex2-let-star">
+(let* ((x (+ 4 5))
+         (y (* x x))
+         (y (+ x y)))
+    (* x y))
+</div>
+
+<div class="live" id="ex-my-let-star" data-lib="lib-print-gensym-pretty syntax-my-let-my syntax-my-let-star">
+(my-let* ((x (+ 4 5))
+         (y (* x x))
+         (y (+ x y)))
+    (* x y))
+</div>
+
+<div class="live" id="ex-let-star-expand" data-lib="lib-print-gensym-pretty syntax-my-let-my syntax-my-let-star">
+(expand '(my-let* ((x (+ 4 5))
+                  (y (* x x))
+                  (y (+ x y)))
+             (* x y)))
+</div>
+
+<h2>References</h2>
+<ul>
+<li><a href="https://cisco.github.io/ChezScheme/#docs">Chez Scheme docs</a></li>
+<li><a href="https://cisco.github.io/ChezScheme/csug/csug_1.html#./csug:h0">Chez Scheme docs h0</a></li>
+
+<li><a href="https://cisco.github.io/ChezScheme/csug/io.html#./io:s122">Chez scheme docs print-gensym</a></li>
+
+<li><a href="https://r6rs.org/">R6RS</a> (see Appendix B: Sample definitions for derived forms)</li>
+
+<li><a href="https://scheme.com/tspl4/">tspl4</a></li>
+<li><a href="https://scheme.com/tspl4/start.html#g21">tspl4 start</a></li>
+<li><a href="https://scheme.com/tspl4/further.html#./further:h1">tspl4 further h1</a></li>
+<li><a href="https://scheme.com/tspl4/syntax.html#./syntax:h0">tspl4 syntax</a>
+{% endblock %}
